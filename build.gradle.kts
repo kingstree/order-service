@@ -1,11 +1,12 @@
 plugins {
     java
     id("org.springframework.boot") version "3.5.3"
-    id("io.spring.dependency-management") version "1.1.7"
+    id("io.spring.dependency-management") version "1.1.5"
 }
 
 group = "com.bookshop"
 version = "0.0.1-SNAPSHOT"
+extra.set("testcontainersVersion", "1.19.8")
 
 java {
     toolchain {
@@ -15,6 +16,14 @@ java {
 
 repositories {
     mavenCentral()
+}
+dependencyManagement {// 책에서는 없으나... 클라우드 디펜던시가 필요했음
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.1")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.1")
+        mavenBom("org.testcontainers:testcontainers-bom:${property("testcontainersVersion")}")
+
+    }
 }
 
 dependencies {
@@ -31,9 +40,26 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("com.squareup.okhttp3:mockwebserver")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:r2dbc")
+}
+
+tasks.bootBuildImage {
+    builder.set("paketobuildpacks/builder-jammy-java-tiny:0.0.46")
+//    imagePlatform.set("linux/arm64")
+    imageName.set(project.name)
+    imageName.set("ghcr.io/kingstree/product-service:latest")   // ★ 레지스트리·계정 포함
+    environment.put("BP_JVM_VERSION", "17")
+
+    docker {
+        publishRegistry {
+            username = project.findProperty("registryFUsername") as String?
+            password = project.findProperty("registryToken") as String?
+            url = project.findProperty("registryUrl") as String?
+        }
+    }
 }
 
 tasks.withType<Test> {

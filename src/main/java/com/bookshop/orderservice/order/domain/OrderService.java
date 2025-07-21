@@ -23,7 +23,7 @@ public class OrderService {
 	}// 여러개의 주문
 
 	public Mono<Order> submitOrder(String isbn, int quantity) { // 하나의 주문
-		return bookClient.getBookByIsbn(isbn)
+		return bookClient.getBookByIsbn(isbn)//주문 객체를 가지고 모노를 생성한다.
 				.map(book -> buildAcceptedOrder(book, quantity))
 				.defaultIfEmpty(buildRejectedOrder(isbn, quantity))
 				.flatMap(orderRepository::save);
