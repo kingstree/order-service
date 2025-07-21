@@ -3,7 +3,7 @@ on: push
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: kingstree/order-service
+  IMAGE_NAME: bookshop/order-service
   VERSION: latest
 
 jobs:
