@@ -55,6 +55,10 @@ spring:
      username: rabbit
      password: rabbit
      connection-timeout: 5s
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt: #OAuth2는 액세스 토큰에 대한 데이터 형식을 강제로 규정하지 않기에 명시적으로 지정해야 함 (지금은 jwt로 사용)
+          issuer-uri: http://localhost:8080/realms/bookshop
 polar:
   catalog-service-uri: "http://localhost:9001"
