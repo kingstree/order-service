@@ -7,7 +7,7 @@ plugins {
 group = "com.bookshop"
 version = "0.0.1-SNAPSHOT"
 extra.set("testcontainersVersion", "1.19.8")
-
+extra.set("testKeycloakVersion", "3.3.1")
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -44,11 +44,15 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    testImplementation ("org.springframework.security:spring-security-test")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:r2dbc")
     testImplementation("org.springframework.cloud:spring-cloud-stream-test-binder")
+    //테스트 컨테이너에 기반한 키클록테스트 유틸리티 제공
+    testImplementation ("com.github.dasniko:testcontainers-keycloak:${property("testKeycloakVersion")}")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
 }
 
 tasks.bootBuildImage {
