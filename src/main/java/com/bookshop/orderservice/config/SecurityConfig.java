@@ -16,7 +16,10 @@ public class SecurityConfig {
 						.pathMatchers("/actuator/**").permitAll()
 						.anyExchange().authenticated()//모든 요청은 인증이 필요하다
 				)
-				.oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt)
+				//.oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt)
+				.oauth2ResourceServer(resourceServer ->
+						resourceServer.jwt(jwt -> {})
+				)
 				.requestCache(requestCacheSpec -> //각 요청은 액세스 토큰을 가지고 있어야 함 세션 캐시를 유지할 필요가 없음
 						requestCacheSpec.requestCache(NoOpServerRequestCache.getInstance()))
 				.csrf(ServerHttpSecurity.CsrfSpec::disable)
