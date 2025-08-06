@@ -8,6 +8,7 @@ group = "com.bookshop"
 version = "0.0.1-SNAPSHOT"
 extra.set("testcontainersVersion", "1.19.8")
 extra.set("testKeycloakVersion", "3.3.1")
+extra.set("otelVersion", "1.33.3")
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -34,12 +35,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation ("org.springframework.cloud:spring-cloud-stream-binder-rabbit")
     implementation ("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    //모니터링과 관리를 위한 액추에이터 의존성 추가
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly ("org.flywaydb:flyway-core")
     runtimeOnly ("org.postgresql:r2dbc-postgresql")
     runtimeOnly ("org.springframework:spring-jdbc")
     runtimeOnly("org.flywaydb:flyway-database-postgresql") //Flyway 10.x부터는 flyway-core 만으로는 각 DB를 지원하지 않고, 별도 아티팩트를 추가해야 해요.
+    runtimeOnly ("io.micrometer:micrometer-registry-prometheus")
+    runtimeOnly ("io.opentelemetry.javaagent:opentelemetry-javaagent:${property("otelVersion")}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")

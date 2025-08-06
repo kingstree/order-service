@@ -13,6 +13,7 @@ public class SecurityConfig {
 	SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
 		return http
 				.authorizeExchange(exchange -> exchange
+						.pathMatchers("/actuator/**").permitAll()
 						.anyExchange().authenticated()//모든 요청은 인증이 필요하다
 				)
 				.oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt)
