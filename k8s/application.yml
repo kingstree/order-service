@@ -1,0 +1,14 @@
+bookshop:
+  catalog-service-uri: http://catalog-service
+spring:
+  flyway:
+    url: jdbc:postgresql://bookshop-postgres/bookshopdb_order
+  r2dbc:
+    url: r2dbc:postgresql://bookshop-postgres/bookshopdb_order
+  rabbitmq:
+    host: bookshop-rabbitmq
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://bookshop-keycloak/realms/bookshop
